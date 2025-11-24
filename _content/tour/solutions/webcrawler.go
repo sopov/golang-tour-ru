@@ -13,81 +13,81 @@ import (
 )
 
 type Fetcher interface {
-	// Fetch returns the body of URL and
-	// a slice of URLs found on that page.
+	// Fetch возвращает тело URL и
+	// срез URL, найденных на этой странице.
 	Fetch(url string) (body string, urls []string, err error)
 }
 
-// fetched tracks URLs that have been (or are being) fetched.
-// The lock must be held while reading from or writing to the map.
-// See https://golang.org/ref/spec#Struct_types section on embedded types.
+// fetched отслеживает URL, которые были (или находятся в процессе) получены.
+// Блокировка должна удерживаться при чтении из или записи в хэш-таблицу.
+// См. https://golang.org/ref/spec#Struct_types раздел о встроенных типах.
 var fetched = struct {
 	m map[string]error
 	sync.Mutex
 }{m: make(map[string]error)}
 
-var loading = errors.New("url load in progress") // sentinel value
+var loading = errors.New("загрузка URL в процессе") // сигнальное значение
 
-// Crawl uses fetcher to recursively crawl
-// pages starting with url, to a maximum of depth.
+// Crawl использует fetcher для рекурсивного обхода
+// страниц, начиная с url, до максимальной глубины.
 func Crawl(url string, depth int, fetcher Fetcher) {
 	if depth <= 0 {
-		fmt.Printf("<- Done with %v, depth 0.\n", url)
+		fmt.Printf("<- Готово с %v, глубина 0.\n", url)
 		return
 	}
 
 	fetched.Lock()
 	if _, ok := fetched.m[url]; ok {
 		fetched.Unlock()
-		fmt.Printf("<- Done with %v, already fetched.\n", url)
+		fmt.Printf("<- Готово с %v, уже получено.\n", url)
 		return
 	}
-	// We mark the url to be loading to avoid others reloading it at the same time.
+	// Мы помечаем url как загружаемый, чтобы избежать повторной загрузки другими одновременно.
 	fetched.m[url] = loading
 	fetched.Unlock()
 
-	// We load it concurrently.
+	// Мы загружаем его параллельно.
 	body, urls, err := fetcher.Fetch(url)
 
-	// And update the status in a synced zone.
+	// И обновляем статус в синхронизированной зоне.
 	fetched.Lock()
 	fetched.m[url] = err
 	fetched.Unlock()
 
 	if err != nil {
-		fmt.Printf("<- Error on %v: %v\n", url, err)
+		fmt.Printf("<- Ошибка на %v: %v\n", url, err)
 		return
 	}
-	fmt.Printf("Found: %s %q\n", url, body)
+	fmt.Printf("Найдено: %s %q\n", url, body)
 	done := make(chan bool)
 	for i, u := range urls {
-		fmt.Printf("-> Crawling child %v/%v of %v : %v.\n", i, len(urls), url, u)
+		fmt.Printf("-> Обход дочернего %v/%v из %v : %v.\n", i, len(urls), url, u)
 		go func(url string) {
 			Crawl(url, depth-1, fetcher)
 			done <- true
 		}(u)
 	}
 	for i, u := range urls {
-		fmt.Printf("<- [%v] %v/%v Waiting for child %v.\n", url, i, len(urls), u)
+		fmt.Printf("<- [%v] %v/%v Ожидание дочернего %v.\n", url, i, len(urls), u)
 		<-done
 	}
-	fmt.Printf("<- Done with %v\n", url)
+	fmt.Printf("<- Готово с %v\n", url)
 }
 
 func main() {
 	Crawl("https://golang.org/", 4, fetcher)
 
-	fmt.Println("Fetching stats\n--------------")
+	fmt.Println("Статистика получения\n--------------")
 	for url, err := range fetched.m {
 		if err != nil {
-			fmt.Printf("%v failed: %v\n", url, err)
+			fmt.Printf("%v не удалось: %v\n", url, err)
 		} else {
-			fmt.Printf("%v was fetched\n", url)
+			fmt.Printf("%v было получено\n", url)
 		}
 	}
 }
 
-// fakeFetcher is Fetcher that returns canned results.
+// fakeFetcher — это Fetcher, который возвращает предопределенные результаты.
 type fakeFetcher map[string]*fakeResult
 
 type fakeResult struct {
@@ -99,20 +99,20 @@ func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
 	if res, ok := (*f)[url]; ok {
 		return res.body, res.urls, nil
 	}
-	return "", nil, fmt.Errorf("not found: %s", url)
+	return "", nil, fmt.Errorf("не найдено: %s", url)
 }
 
-// fetcher is a populated fakeFetcher.
+// fetcher — это заполненный fakeFetcher.
 var fetcher = &fakeFetcher{
 	"https://golang.org/": &fakeResult{
-		"The Go Programming Language",
+		"Язык программирования Go",
 		[]string{
 			"https://golang.org/pkg/",
 			"https://golang.org/cmd/",
 		},
 	},
 	"https://golang.org/pkg/": &fakeResult{
-		"Packages",
+		"Пакеты",
 		[]string{
 			"https://golang.org/",
 			"https://golang.org/cmd/",
@@ -121,14 +121,14 @@ var fetcher = &fakeFetcher{
 		},
 	},
 	"https://golang.org/pkg/fmt/": &fakeResult{
-		"Package fmt",
+		"Пакет fmt",
 		[]string{
 			"https://golang.org/",
 			"https://golang.org/pkg/",
 		},
 	},
 	"https://golang.org/pkg/os/": &fakeResult{
-		"Package os",
+		"Пакет os",
 		[]string{
 			"https://golang.org/",
 			"https://golang.org/pkg/",

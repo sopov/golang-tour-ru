@@ -29,8 +29,8 @@ func (s *Struct) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.Handle("/string", String("I'm a frayed knot."))
-	http.Handle("/struct", &Struct{"Hello", ":", "Gophers!"})
+	http.Handle("/string", String("Я изношенный узел."))
+	http.Handle("/struct", &Struct{"Привет", ":", "Гоферы!"})
 	err := http.ListenAndServe("localhost:4000", nil)
 	if err != nil {
 		log.Fatal(err)

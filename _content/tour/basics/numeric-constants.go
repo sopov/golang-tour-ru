@@ -5,10 +5,10 @@ package main
 import "fmt"
 
 const (
-	// Create a huge number by shifting a 1 bit left 100 places.
-	// In other words, the binary number that is 1 followed by 100 zeroes.
+	// Создаём огромное число, сдвигая бит 1 влево на 100 позиций.
+	// Другими словами, двоичное число, которое представляет собой 1, за которой следуют 100 нулей.
 	Big = 1 << 100
-	// Shift it right again 99 places, so we end up with 1<<1, or 2.
+	// Сдвигаем его обратно вправо на 99 позиций, так что получаем 1<<1, или 2.
 	Small = Big >> 99
 )
 

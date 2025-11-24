@@ -21,18 +21,18 @@ func walkImpl(t *tree.Tree, ch chan int) {
 	walkImpl(t.Right, ch)
 }
 
-// Walk walks the tree t sending all values
-// from the tree to the channel ch.
+// Walk обходит дерево t, отправляя все значения
+// из дерева в канал ch.
 func Walk(t *tree.Tree, ch chan int) {
 	walkImpl(t, ch)
-	// Need to close the channel here
+	// Нужно закрыть канал здесь
 	close(ch)
 }
 
-// Same determines whether the trees
-// t1 and t2 contain the same values.
-// NOTE: The implementation leaks goroutines when trees are different.
-// See binarytrees_quit.go for a better solution.
+// Same определяет, содержат ли деревья
+// t1 и t2 одинаковые значения.
+// ПРИМЕЧАНИЕ: Реализация утекает горутинами, когда деревья различны.
+// См. binarytrees_quit.go для лучшего решения.
 func Same(t1, t2 *tree.Tree) bool {
 	w1, w2 := make(chan int), make(chan int)
 
@@ -54,15 +54,15 @@ func Same(t1, t2 *tree.Tree) bool {
 func main() {
 	fmt.Print("tree.New(1) == tree.New(1): ")
 	if Same(tree.New(1), tree.New(1)) {
-		fmt.Println("PASSED")
+		fmt.Println("ПРОЙДЕНО")
 	} else {
-		fmt.Println("FAILED")
+		fmt.Println("НЕ ПРОЙДЕНО")
 	}
 
 	fmt.Print("tree.New(1) != tree.New(2): ")
 	if !Same(tree.New(1), tree.New(2)) {
-		fmt.Println("PASSED")
+		fmt.Println("ПРОЙДЕНО")
 	} else {
-		fmt.Println("FAILED")
+		fmt.Println("НЕ ПРОЙДЕНО")
 	}
 }

@@ -5,6 +5,6 @@ package main
 import "fmt"
 
 func main() {
-	v := 42 // change me!
+	v := 42 // измени меня!
 	fmt.Printf("v is of type %T\n", v)
 }

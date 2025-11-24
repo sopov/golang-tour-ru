@@ -14,7 +14,7 @@ import (
 type ErrNegativeSqrt float64
 
 func (e ErrNegativeSqrt) Error() string {
-	return fmt.Sprintf("Sqrt: negative number %g", e)
+	return fmt.Sprintf("Sqrt: отрицательное число %g", e)
 }
 
 const delta = 1e-10

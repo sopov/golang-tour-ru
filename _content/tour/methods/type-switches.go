@@ -7,11 +7,11 @@ import "fmt"
 func do(i interface{}) {
 	switch v := i.(type) {
 	case int:
-		fmt.Printf("Twice %v is %v\n", v, v*2)
+		fmt.Printf("Удвоенное %v равно %v\n", v, v*2)
 	case string:
-		fmt.Printf("%q is %v bytes long\n", v, len(v))
+		fmt.Printf("%q имеет длину %v байт\n", v, len(v))
 	default:
-		fmt.Printf("I don't know about type %T!\n", v)
+		fmt.Printf("Я не знаю тип %T!\n", v)
 	}
 }
 

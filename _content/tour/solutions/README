@@ -1,8 +1,8 @@
-This directory contains the solutions to the exercises presented in the Go tour.
+Эта директория содержит решения упражнений, представленных в туре по Go.
 
-IMPORTANT: The main point of the Go tour is to challenge you, so please try to
-solve all problems by yourself before reading these solutions!!!
+ВАЖНО: Основная цель тура по Go — бросить вам вызов, поэтому, пожалуйста, попробуйте
+решить все задачи самостоятельно, прежде чем читать эти решения!!!
 
-In any case, these are not the only valid solutions. But they have been reviewed
-by the Go team. Therefore you can use them as a guide on how to solve the
-most basic problems in Go.
+В любом случае, это не единственные правильные решения. Но они были проверены
+командой Go. Поэтому вы можете использовать их в качестве руководства по решению
+самых базовых задач в Go.

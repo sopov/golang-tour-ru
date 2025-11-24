@@ -264,16 +264,16 @@ ul {
     color: #BABABA;
 }
 .menu-button[imports-checkbox]:after {
-    content: ' off';
+    content: ' выкл';
 }
 .menu-button[imports-checkbox].active:after {
-    content: ' on';
+    content: ' вкл';
 }
 .menu-button[syntax-checkbox]:after {
-    content: ' off';
+    content: ' выкл';
 }
 .menu-button[syntax-checkbox].active:after {
-    content: ' on';
+    content: ' вкл';
 }
 #file-menu .menu-button {
     float: right;

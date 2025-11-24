@@ -19,22 +19,22 @@ func walkImpl(t *tree.Tree, ch, quit chan int) {
 	walkImpl(t.Left, ch, quit)
 	select {
 	case ch <- t.Value:
-		// Value successfully sent.
+		// Значение успешно отправлено.
 	case <-quit:
 		return
 	}
 	walkImpl(t.Right, ch, quit)
 }
 
-// Walk walks the tree t sending all values
-// from the tree to the channel ch.
+// Walk обходит дерево t, отправляя все значения
+// из дерева в канал ch.
 func Walk(t *tree.Tree, ch, quit chan int) {
 	walkImpl(t, ch, quit)
 	close(ch)
 }
 
-// Same determines whether the trees
-// t1 and t2 contain the same values.
+// Same определяет, содержат ли деревья
+// t1 и t2 одинаковые значения.
 func Same(t1, t2 *tree.Tree) bool {
 	w1, w2 := make(chan int), make(chan int)
 	quit := make(chan int)
@@ -58,15 +58,15 @@ func Same(t1, t2 *tree.Tree) bool {
 func main() {
 	fmt.Print("tree.New(1) == tree.New(1): ")
 	if Same(tree.New(1), tree.New(1)) {
-		fmt.Println("PASSED")
+		fmt.Println("ПРОЙДЕНО")
 	} else {
-		fmt.Println("FAILED")
+		fmt.Println("НЕ ПРОЙДЕНО")
 	}
 
 	fmt.Print("tree.New(1) != tree.New(2): ")
 	if !Same(tree.New(1), tree.New(2)) {
-		fmt.Println("PASSED")
+		fmt.Println("ПРОЙДЕНО")
 	} else {
-		fmt.Println("FAILED")
+		fmt.Println("НЕ ПРОЙДЕНО")
 	}
 }

@@ -17,9 +17,9 @@ func main() {
 	for {
 		select {
 		case <-tick:
-			fmt.Printf("[%6s] tick.\n", elapsed())
+			fmt.Printf("[%6s] тик.\n", elapsed())
 		case <-boom:
-			fmt.Printf("[%6s] BOOM!\n", elapsed())
+			fmt.Printf("[%6s] БУМ!\n", elapsed())
 			return
 		default:
 			fmt.Printf("[%6s]     .\n", elapsed())
